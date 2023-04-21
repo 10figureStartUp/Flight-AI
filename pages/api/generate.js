@@ -10,30 +10,74 @@ export default async function (req, res) {
     res.status(500).json({
       error: {
         message: "OpenAI API key not configured, please follow instructions in README.md",
-      }
+      },
     });
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const requestData = req.body;
+
+  if (!requestData) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
-      }
+        message: "Invalid request data",
+      },
     });
     return;
   }
+
+  const {
+    fullName,
+    email,
+    flightType,
+    departDate,
+    returnDate,
+    oneWayDate,
+    numFlights,
+    multiCityDates,
+    originAirport,
+    destinationAirport,
+    selectedAirports,
+    budget,
+    airline,
+    flightClass,
+    seat,
+  } = requestData;
+
+  const inputPromptParts = [
+    "Generate flight itinerary details for the following information:\n",
+  ];
+
+  if (fullName) inputPromptParts.push(`Full Name: ${fullName}\n`);
+  if (email) inputPromptParts.push(`Email: ${email}\n`);
+  if (flightType) inputPromptParts.push(`Flight Type: ${flightType}\n`);
+  if (departDate) inputPromptParts.push(`Departure Date: ${departDate}\n`);
+  if (returnDate) inputPromptParts.push(`Return Date: ${returnDate}\n`);
+  if (oneWayDate) inputPromptParts.push(`One Way Date: ${oneWayDate}\n`);
+  if (numFlights) inputPromptParts.push(`Number of Flights: ${numFlights}\n`);
+  if (multiCityDates) inputPromptParts.push(`Multi-City Dates: ${multiCityDates.join(",")}\n`);
+  if (originAirport) inputPromptParts.push(`Origin Airport: ${originAirport}\n`);
+  if (destinationAirport) inputPromptParts.push(`Destination Airport: ${destinationAirport}\n`);
+  if (selectedAirports) inputPromptParts.push(`Selected Airports: ${selectedAirports.join(", ")}\n`);
+  if (airline) inputPromptParts.push(`Airline: ${airline}\n`);
+  if (flightClass) inputPromptParts.push(`Flight Class: ${flightClass}\n`);
+  if (seat) inputPromptParts.push(`Seat: ${seat}\n`);
+
+  inputPromptParts.push(
+    "\nGenerate a realistic flight itinerary including price (within budget), confirmation number, boarding time, take-off time, landing time, and random seat (if necessary), airline (if necessary), and flight class (if necessary)."
+  );
+
+  const inputPrompt = inputPromptParts.join("");
 
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
-      temperature: 0.6,
+      prompt: inputPrompt,
+      temperature: 0.3,
+      max_tokens: 3800,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
-  } catch(error) {
-    // Consider adjusting the error handling logic for your use case
+  } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -41,22 +85,9 @@ export default async function (req, res) {
       console.error(`Error with OpenAI API request: ${error.message}`);
       res.status(500).json({
         error: {
-          message: 'An error occurred during your request.',
-        }
+          message: "An error occurred during your request.",
+        },
       });
     }
   }
-}
-
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
-
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
 }

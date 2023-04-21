@@ -1,0 +1,78 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .main {
+    text-align: center;
+  }
+  
+  .title {
+    margin: 2rem 0;
+  }
+  
+  .subTitle {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .input,
+  .select {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .continueButton {
+    background-color: #000146;
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .continueButton:hover {
+    background-color: #1a1a8d;
+  }
+  
+  .backButton {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .backButton:hover {
+    background-color: #ccc;
+  }
+  .loadingText {
+    text-align: center;
+  }
+  
