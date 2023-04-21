@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./page4.module.css";
-import Page3Container from "./Page3Container";
 
 const Page4 = () => {
   const router = useRouter();

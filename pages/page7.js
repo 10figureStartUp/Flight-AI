@@ -4,7 +4,7 @@ import styles from './page7.module.css';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
-import { LoadingScreen } from './loadingscreen';
+import LoadingScreen from './loadingscreen';
 
 const airlines = [
   { value: 'American Airlines', label: 'American Airlines' },
