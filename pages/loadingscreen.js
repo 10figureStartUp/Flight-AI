@@ -1,5 +1,6 @@
 import styles from "./page7.module.css";
 
+
 export function LoadingScreen() {
   return (
     <div>
